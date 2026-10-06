@@ -231,7 +231,7 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
 <!-- 5 PLAN -->
 <section id="s5">
   <div class="eyebrow">Cierre</div>
-  <h2>Mi plan de 30 días</h2>
+  <h2>Mi hoja de ruta de 30 días</h2>
   <p class="muted">Tres compromisos pequeños, con fecha. Se llenan con lo que ya escribiste; puedes cambiarlos.</p>
   <div class="card">
     <div><label for="p1">Una conversación estratégica que voy a tener</label><textarea id="p1" data-k="p1"></textarea></div>
@@ -241,9 +241,9 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
     <div><label for="p5">Fecha de revisión</label><input type="date" id="p5" data-k="p5"></div>
   </div>
   <div class="row"><button class="btn alt" id="fill">Rellenar con lo que escribí</button></div>
-  <div class="card soft"><label>Mi plan</label><pre class="out" id="plan"></pre>
+  <div class="card soft"><label>Mi hoja de ruta</label><pre class="out" id="plan"></pre>
     <div class="row"><button class="btn" id="copyPlan">Copiar</button><a class="btn alt" id="wa" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:inline-grid;align-items:center">Abrir en WhatsApp</a></div>
-    <p class="small muted">WhatsApp abre un mensaje con tu plan para que lo envíes tú, a ti misma o a quien elijas.</p></div>
+    <p class="small muted">WhatsApp abre un mensaje con tu hoja de ruta para que lo envíes tú, a ti misma o a quien elijas.</p></div>
   <div class="nextbar"><button class="btn alt" data-go="4">Atrás</button><button class="btn" data-go="6">Para llevar</button></div>
 </section>
 
@@ -265,9 +265,9 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
     <h3>Tips de uso de este cuaderno</h3>
     <ul class="clean">
       <li>Vuelve a abrirlo con el mismo teléfono y navegador: tus respuestas siguen aquí.</li>
-      <li>Revisa tu plan cada semana durante 10 minutos. Pon una alarma.</li>
+      <li>Revisa tu hoja de ruta cada semana durante 10 minutos. Pon una alarma.</li>
       <li>Antes de una reunión difícil, completa los cinco movimientos del paso 3.</li>
-      <li>Si cambias de teléfono, copia tu plan y guárdalo en tus notas o en WhatsApp.</li>
+      <li>Si cambias de teléfono, copia tu hoja de ruta y guárdalo en tus notas o en WhatsApp.</li>
     </ul>
     <div class="row"><button class="btn alt" id="clear">Borrar mis respuestas</button></div>
   </div>
@@ -291,7 +291,7 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
 
 <script>
 (function(){
-var NAMES=["Inicio","1 Mi patrón","2 Datos","3 Conversar","4 Cuidar","5 Mi plan","Para llevar"];
+var NAMES=["Inicio","1 Mi patrón","2 Datos","3 Conversar","4 Cuidar","5 Mi ruta","Para llevar"];
 var S={};
 try{S=JSON.parse(localStorage.getItem("cuaderno-estrategia")||"{}")||{}}catch(e){S={}}
 function save(){try{localStorage.setItem("cuaderno-estrategia",JSON.stringify(S))}catch(e){}}
@@ -319,7 +319,7 @@ inputs.forEach(function(el){
 
 /* Encuesta de entrada */
 var POLL=[
- ["Un plan con metas a un año","Eso se parece a la perspectiva <b>clásica</b> (Chandler, Andrews): metas, vías de acción y recursos."],
+ ["Metas a un año y cómo lograrlas","Eso se parece a la perspectiva <b>clásica</b> (Chandler, Andrews): metas, vías de acción y recursos."],
  ["Diferenciarme de la competencia","Eso se parece a la perspectiva de <b>posicionamiento</b> (Porter, Lafley y Martin): un valor único y elecciones coordinadas."],
  ["Lo que aprendemos al decidir cada día","Eso se parece a la perspectiva de <b>aprendizaje</b> (Mintzberg): un patrón en una corriente de decisiones."],
  ["Cómo cambian las decisiones con el tiempo","Eso se parece a la estrategia <b>como proceso</b> (De Villa y Langley, 2024): emergencia, flujo y evolución."],
@@ -437,7 +437,7 @@ renderCare();
 function fmtDate(v){if(!v)return"…";var p=v.split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:v}
 function planText(){
   function v(x){return x&&x.trim()?x.trim():"…"}
-  return "Mi plan de 30 días\n\n"+
+  return "Mi hoja de ruta de 30 días\n\n"+
   "1. Conversación estratégica: "+v(S.p1)+"\n"+
   "2. Renuncia que practico: "+v(S.p2)+"\n"+
   "3. Gesto de cuidado: "+v(S.p3)+"\n\n"+
@@ -452,7 +452,7 @@ $("fill").onclick=function(){
   if(c)setField("p1",c);
   if(S.ren&&S.ren.trim())setField("p2",S.ren.trim());
   if(S.ges&&S.ges.trim())setField("p3",S.ges.trim());
-  save();renderPlan();toast("Plan rellenado");
+  save();renderPlan();toast("Hoja de ruta rellenada");
 };
 
 /* Copiar */
