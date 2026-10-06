@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Cuaderno de estrategia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Fuente: Avenir cuando el teléfono la tiene (iPhone, Mac); Nunito Sans como respaldo */
+/* Layout: cuaderno móvil de una columna, con navegación de pasos fija arriba y un paso visible a la vez */
+:root{
+  --bg:#F6F9FB; --surface:#FFFFFF; --soft:#E3F0F4; --ink:#1B2B3A; --muted:#52667A; --line:#D5E0E8;
+  --accent:#D64A36; --accent-ink:#FFFFFF; --leaf:#17797A; --gold:#9A6A0F; --ok:#1B7448; --bad:#A93A25;
+  --display:"Avenir Next",Avenir,"Nunito Sans","Segoe UI",system-ui,sans-serif;
+  --body:"Avenir Next",Avenir,"Nunito Sans","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1B2A; --surface:#17283B; --soft:#1F3550; --ink:#E8EFF6; --muted:#A3B6CA; --line:#2B4260;
+    --accent:#F2806C; --accent-ink:#2A0E09; --leaf:#5CC4C4; --gold:#F2B134; --ok:#72D6A3; --bad:#F29079;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1B2A; --surface:#17283B; --soft:#1F3550; --ink:#E8EFF6; --muted:#A3B6CA; --line:#2B4260;
+  --accent:#F2806C; --accent-ink:#2A0E09; --leaf:#5CC4C4; --gold:#F2B134; --ok:#72D6A3; --bad:#F29079;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:640px;margin-inline:auto}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2rem;letter-spacing:-.01em}
+h2{font-size:1.5rem}
+h3{font-size:1.1rem}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.eyebrow{font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--leaf)}
+
+/* Navegación */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin-inline:-16px;padding:10px 16px;border-bottom:1px solid var(--line)}
+.steps{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.steps::-webkit-scrollbar{display:none}
+.steps button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .9rem var(--body);padding:8px 14px;border-radius:999px;min-height:40px;cursor:pointer}
+.steps button[aria-current="step"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.steps button:focus-visible,.btn:focus-visible,.opt:focus-visible,summary:focus-visible{outline:3px solid var(--leaf);outline-offset:2px}
+
+section{display:none;padding-block:24px 8px}
+section.on{display:grid;gap:18px}
+.lead{font-size:1.1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px}
+.soft{background:var(--soft);border-color:transparent}
+label{font-weight:700;display:block;margin-bottom:4px}
+.hint{font-weight:400;color:var(--muted);font-size:.9rem}
+textarea,input[type=text],input[type=date]{width:100%;font:400 16px/1.45 var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+textarea{min-height:84px;resize:vertical}
+textarea:focus,input:focus{outline:3px solid var(--leaf);outline-offset:1px}
+.btn{font:700 1rem var(--body);border:0;border-radius:10px;padding:12px 18px;min-height:46px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.nextbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+/* Opciones */
+.opts{display:grid;gap:8px}
+.opt{width:100%;text-align:left;font:600 1rem var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-height:48px;cursor:pointer}
+.opt[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+.opt.right{border-color:var(--ok);box-shadow:inset 0 0 0 2px var(--ok)}
+.opt.wrong{border-color:var(--bad);box-shadow:inset 0 0 0 2px var(--bad)}
+.fb{padding:12px 14px;border-radius:10px;background:var(--soft);font-size:.95rem}
+.fb b{color:var(--leaf)}
+
+/* Conceptos (chips) */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:600 .95rem var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;min-height:42px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:var(--bg)}
+
+/* Pasos de conversación */
+ol.mov{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:m}
+ol.mov li{counter-increment:m;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+ol.mov li::before{content:counter(m);font:700 1rem var(--display);width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center}
+ol.mov b{display:block}
+.say{font-style:italic;color:var(--muted);font-size:.95rem}
+
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0}
+summary{cursor:pointer;font-weight:700;padding:14px 16px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;font-size:1.3rem;line-height:1}
+details[open] summary::after{content:"−"}
+details .body{padding:0 16px 16px;display:grid;gap:8px}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);}
+
+/* Barras de cuidado */
+.rng{display:grid;gap:4px}
+input[type=range]{width:100%;accent-color:var(--accent);min-height:36px}
+.bar{height:10px;border-radius:6px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--leaf);border-radius:6px}
+.res{display:grid;grid-template-columns:minmax(0,1fr) 28px;gap:4px 10px;align-items:center}
+.res .bar{grid-column:1}
+.res span.n{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.res .nm{grid-column:1/-1;font-size:.95rem;font-weight:600}
+
+pre.out{white-space:pre-wrap;word-wrap:break-word;font:400 .95rem/1.5 var(--body);background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px;margin:0;user-select:all}
+ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
+.ref{font-size:.92rem;display:grid;gap:10px}
+.ref a{color:var(--accent);word-break:break-word}
+.score{font:700 1.4rem var(--display);color:var(--accent)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:700;font-size:.95rem;z-index:9}
+@media (prefers-reduced-motion:no-preference){section.on{animation:in .25s ease-out}@keyframes in{from{opacity:.0;transform:translateY(6px)}to{opacity:1;transform:none}}}
+</style>
+
+
+</head>
+<body>
+<div class="wrap">
+<header style="padding-block:20px 12px;display:grid;gap:6px">
+  <div class="eyebrow">Conferencia de cierre · Estrategia, liderazgo y cuidado</div>
+  <h1>Cuaderno de estrategia</h1>
+  <p class="muted small">Lo que escribes se guarda solo en este teléfono. Nadie más lo ve, a menos que tú lo envíes.</p>
+</header>
+
+<nav aria-label="Pasos del cuaderno"><div class="steps" id="steps"></div></nav>
+
+<!-- 0 INICIO -->
+<section id="s0" class="on">
+  <h2>Empecemos por tu primera idea</h2>
+  <p class="lead">Cuando escuchas la palabra <b>estrategia</b>, ¿en qué piensas primero?</p>
+  <div class="opts" id="poll"></div>
+  <div class="fb" id="pollfb" hidden></div>
+  <div class="nextbar"><span></span><button class="btn" data-go="1">Comenzar</button></div>
+</section>
+
+<!-- 1 MI PATRÓN -->
+<section id="s1">
+  <div class="eyebrow">Bloque 1 · ¿Qué es estrategia?</div>
+  <h2>Mi estrategia ya existe: se ve en lo que decido</h2>
+  <p class="muted">La estrategia es <i>un patrón en una corriente de decisiones</i> (Mintzberg et al., 2007) y una actividad social: acciones e interacciones que dan dirección (Golsorkhi et al., 2025). Mira tu último mes.</p>
+  <div class="card">
+    <div><label for="d1">Decisión 1 <span class="hint">algo que elegiste hacer</span></label><input type="text" id="d1" data-k="d1" placeholder="Ej.: abrí un segundo turno de atención"></div>
+    <div><label for="d2">Decisión 2</label><input type="text" id="d2" data-k="d2"></div>
+    <div><label for="d3">Decisión 3 <span class="hint">puede ser algo que decidiste no hacer</span></label><input type="text" id="d3" data-k="d3"></div>
+  </div>
+  <div class="card">
+    <label>¿Qué conceptos esenciales aparecen en esas decisiones? <span class="hint">toca los que veas</span></label>
+    <div class="chips" id="chips"></div>
+    <p class="small muted" id="chipmsg"></p>
+  </div>
+  <div class="card">
+    <div><label for="pat">¿Qué patrón ves? <span class="hint">¿qué se repite en lo que eliges?</span></label><textarea id="pat" data-k="pat"></textarea></div>
+    <div><label for="inc">¿A quién incluí en esas decisiones y a quién no?</label><textarea id="inc" data-k="inc"></textarea></div>
+  </div>
+  <div class="card soft">
+    <label for="frase">Mi estrategia hoy, en una frase</label>
+    <textarea id="frase" data-k="frase" placeholder="En la práctica, mi estrategia es…"></textarea>
+  </div>
+  <div class="nextbar"><button class="btn alt" data-go="0">Atrás</button><button class="btn" data-go="2">Siguiente</button></div>
+</section>
+
+<!-- 2 DATOS -->
+<section id="s2">
+  <div class="eyebrow">Bloque 2 · ¿Quién hace la estrategia?</div>
+  <h2>Datos y mitos</h2>
+  <p class="muted">Seis preguntas. Toca tu respuesta y mira la fuente. Los datos de Estados Unidos se marcan como tales.</p>
+  <div id="quiz" style="display:grid;gap:14px"></div>
+  <div class="card soft"><div class="small muted">Tu puntaje</div><div class="score" id="score">0 de 6</div></div>
+  <div class="card">
+    <label for="dato">¿Qué dato te movió más? ¿Qué cambiaría en tu organización o en tu negocio?</label>
+    <textarea id="dato" data-k="dato"></textarea>
+  </div>
+  <div class="nextbar"><button class="btn alt" data-go="1">Atrás</button><button class="btn" data-go="3">Siguiente</button></div>
+</section>
+
+<!-- 3 CONVERSAR -->
+<section id="s3">
+  <div class="eyebrow">Bloque 3 · Conversar para estrategizar</div>
+  <h2>La estrategia se hace conversando</h2>
+  <p class="muted">Una conversación estratégica tiene cinco movimientos. Úsalos como mapa, no como libreto.</p>
+  <div class="card">
+    <ol class="mov">
+      <li><div><b>Propósito</b>Para qué conversamos y qué decisión está en juego.<div class="say">“Quiero que decidamos cómo… porque…”</div></div></li>
+      <li><div><b>Hechos</b>Lo que observo, con datos y ejemplos, sin juicios sobre personas.<div class="say">“Lo que he visto es… y los números dicen…”</div></div></li>
+      <li><div><b>Opciones y renuncias</b>Qué caminos hay y qué dejaríamos de hacer en cada uno.<div class="say">“Si elegimos A, dejamos de… ¿Estamos de acuerdo en ese costo?”</div></div></li>
+      <li><div><b>Acuerdos</b>Quién, qué y para cuándo, dicho en voz alta y escrito.<div class="say">“Entonces yo… tú… y lo revisamos el…”</div></div></li>
+      <li><div><b>Seguimiento y aprendizaje</b>Cómo sabremos si funcionó y cuándo ajustamos.<div class="say">“¿Qué miramos en dos semanas para saber si va bien?”</div></div></li>
+    </ol>
+  </div>
+
+  <h3>Situaciones para practicar en tríos</h3>
+  <p class="small muted">Tres roles: <b>A</b> habla, <b>B</b> escucha y pregunta, <b>C</b> observa los cinco movimientos. Rotan. Son situaciones ilustrativas.</p>
+  <details><summary>Caso 1 · La oferta que paga hoy y te desvía</summary><div class="body">
+    <p>Eres emprendedora de turismo. Un operador grande te ofrece un volumen alto de reservas si bajas la tarifa 25% y recibes grupos que no encajan con tu propuesta de experiencias con la comunidad. Tu socia quiere aceptar.</p>
+    <p class="muted">Pregunta de fondo: ¿qué estamos dispuestas a dejar de ser?</p></div></details>
+  <details><summary>Caso 2 · “No hay presupuesto este año”</summary><div class="body">
+    <p>Lideras talento humano en una empresa bananera. Quieres proponer a gerencia un programa de transporte y turnos flexibles para reducir ausentismo y rotación. Te responden que no hay presupuesto.</p>
+    <p class="muted">Pregunta de fondo: ¿cómo conviertes un tema de bienestar en una decisión de negocio, con datos y con opciones?</p></div></details>
+  <details><summary>Caso 3 · La idea que se repite con otra voz</summary><div class="body">
+    <p>Presentas una propuesta en el comité y te interrumpen. Diez minutos después, un colega plantea la misma idea y todos la celebran.</p>
+    <p class="muted">Pregunta de fondo: ¿cómo dejas registro y recuperas la autoría sin romper la relación?</p></div></details>
+
+  <h3>Arma tu propia conversación</h3>
+  <div class="card">
+    <div><label for="c0">¿Con quién y sobre qué asunto?</label><input type="text" id="c0" data-k="c0" placeholder="Ej.: con mi gerente, sobre horarios del equipo"></div>
+    <div><label for="c1">1 · Propósito <span class="hint">para qué</span></label><textarea id="c1" data-k="c1"></textarea></div>
+    <div><label for="c2">2 · Hechos <span class="hint">qué observo</span></label><textarea id="c2" data-k="c2"></textarea></div>
+    <div><label for="c3">3 · Opciones y renuncias</label><textarea id="c3" data-k="c3"></textarea></div>
+    <div><label for="c4">4 · Lo que pido y para cuándo</label><textarea id="c4" data-k="c4"></textarea></div>
+    <div><label for="c5">5 · Cómo haremos seguimiento</label><textarea id="c5" data-k="c5"></textarea></div>
+  </div>
+  <div class="card soft"><label>Así sonaría tu apertura</label><pre class="out" id="script"></pre>
+    <div class="row"><button class="btn" id="copyScript">Copiar</button></div></div>
+  <div class="nextbar"><button class="btn alt" data-go="2">Atrás</button><button class="btn" data-go="4">Siguiente</button></div>
+</section>
+
+<!-- 4 CUIDAR -->
+<section id="s4">
+  <div class="eyebrow">Bloque 4 · Liderar y cuidar</div>
+  <h2>Cuidar es una práctica de liderazgo</h2>
+  <p class="muted">Joan Tronto (1993, 2013) describe el cuidado como un proceso con fases. Aquí lo leemos junto a la estrategia como práctica: atender es observar el entorno, responder es aprender de lo que decidimos.</p>
+  <div class="card" id="rng"></div>
+  <div class="card soft" id="care"></div>
+  <div class="card">
+    <div><label for="ren">Una renuncia que protege mi energía <span class="hint">algo que dejaré de hacer o aceptar</span></label><textarea id="ren" data-k="ren"></textarea></div>
+    <div><label for="ges">Un gesto de cuidado hacia mi equipo o mis aliadas</label><textarea id="ges" data-k="ges"></textarea></div>
+  </div>
+  <div class="nextbar"><button class="btn alt" data-go="3">Atrás</button><button class="btn" data-go="5">Siguiente</button></div>
+</section>
+
+<!-- 5 PLAN -->
+<section id="s5">
+  <div class="eyebrow">Cierre</div>
+  <h2>Mi plan de 30 días</h2>
+  <p class="muted">Tres compromisos pequeños, con fecha. Se llenan con lo que ya escribiste; puedes cambiarlos.</p>
+  <div class="card">
+    <div><label for="p1">Una conversación estratégica que voy a tener</label><textarea id="p1" data-k="p1"></textarea></div>
+    <div><label for="p2">Una renuncia que voy a practicar</label><textarea id="p2" data-k="p2"></textarea></div>
+    <div><label for="p3">Un gesto de cuidado que voy a sostener</label><textarea id="p3" data-k="p3"></textarea></div>
+    <div><label for="p4">Con quién lo voy a compartir <span class="hint">una persona que me pregunte cómo voy</span></label><input type="text" id="p4" data-k="p4"></div>
+    <div><label for="p5">Fecha de revisión</label><input type="date" id="p5" data-k="p5"></div>
+  </div>
+  <div class="row"><button class="btn alt" id="fill">Rellenar con lo que escribí</button></div>
+  <div class="card soft"><label>Mi plan</label><pre class="out" id="plan"></pre>
+    <div class="row"><button class="btn" id="copyPlan">Copiar</button><a class="btn alt" id="wa" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:inline-grid;align-items:center">Abrir en WhatsApp</a></div>
+    <p class="small muted">WhatsApp abre un mensaje con tu plan para que lo envíes tú, a ti misma o a quien elijas.</p></div>
+  <div class="nextbar"><button class="btn alt" data-go="4">Atrás</button><button class="btn" data-go="6">Para llevar</button></div>
+</section>
+
+<!-- 6 PARA LLEVAR -->
+<section id="s6">
+  <div class="eyebrow">Para llevar</div>
+  <h2>Infaltables, tips y lecturas</h2>
+  <div class="card">
+    <h3>Cinco infaltables</h3>
+    <ul class="clean">
+      <li><b>Un propósito que pueda decir en una frase.</b> Es lo que ordena a quién le digo sí y a quién no.</li>
+      <li><b>Una decisión y una renuncia por semana.</b> La estrategia se ve en el patrón.</li>
+      <li><b>Conversaciones con acuerdos escritos.</b> Quién, qué y para cuándo.</li>
+      <li><b>Un círculo de aliadas y patrocinadores.</b> Las carreras se construyen con quien habla de ti cuando no estás.</li>
+      <li><b>Un ritual de cuidado propio.</b> Sin energía no hay estrategia sostenida.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Tips de uso de este cuaderno</h3>
+    <ul class="clean">
+      <li>Vuelve a abrirlo con el mismo teléfono y navegador: tus respuestas siguen aquí.</li>
+      <li>Revisa tu plan cada semana durante 10 minutos. Pon una alarma.</li>
+      <li>Antes de una reunión difícil, completa los cinco movimientos del paso 3.</li>
+      <li>Si cambias de teléfono, copia tu plan y guárdalo en tus notas o en WhatsApp.</li>
+    </ul>
+    <div class="row"><button class="btn alt" id="clear">Borrar mis respuestas</button></div>
+  </div>
+  <div class="card ref">
+    <h3>Lecturas recomendadas</h3>
+    <div>Rivas-Montoya, L. M., Alzate-Aguirre, L., Reyes-Sarmiento, M. E., y Maya Vásquez, J. C. (2024). Exploración de la estrategia abierta en compañías de América Latina: riesgos y beneficios. <i>Estudios Gerenciales, 40</i>(173), 502–515.</div>
+    <div>Ellingrud, K., Yee, L., y Martínez, M. del M. (2025, marzo–abril). How women can win in the workplace. <i>Harvard Business Review</i>.</div>
+    <div>McKinsey &amp; Company y LeanIn.Org. (2025). <i>Women in the Workplace 2025</i>.</div>
+    <div>Centro de Estudios en Gobierno Corporativo (CESA), Club 30% y Women In Connection (2026). Participación de mujeres en juntas directivas en Colombia. Reportado por <a href="https://forbes.co/forbes-women/participacion-de-mujeres-en-juntas-directivas-en-colombia-alcanzo-el-274" target="_blank" rel="noopener">Forbes Colombia</a>.</div>
+    <div>Tronto, J. C. (1993). <i>Moral boundaries: A political argument for an ethic of care</i>. Routledge. Y Tronto, J. C. (2013). <i>Caring democracy</i>. NYU Press.</div>
+    <div>Stone, D., Patton, B., y Heen, S. (2010). <i>Difficult conversations</i> (2.ª ed.). Penguin.</div>
+    <div>Edmondson, A. C. (2018). <i>The fearless organization</i>. Wiley.</div>
+    <div>Lafley, A. G., y Martin, R. L. (2013). <i>Playing to win</i>. Harvard Business Review Press.</div>
+    <div><i>Estramipyme: metodología estratégica para pymes y redes empresariales</i> (2023). Editorial EAFIT. Plataforma: <a href="https://estramipyme-pi.vercel.app/" target="_blank" rel="noopener">estramipyme-pi.vercel.app</a>.</div>
+  </div>
+  <p class="small muted">Conferencista: Luz María Rivas Montoya, Ph.D. · Universidad EAFIT</p>
+  <div class="nextbar"><button class="btn alt" data-go="5">Atrás</button><span></span></div>
+</section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+var NAMES=["Inicio","1 Mi patrón","2 Datos","3 Conversar","4 Cuidar","5 Mi plan","Para llevar"];
+var S={};
+try{S=JSON.parse(localStorage.getItem("cuaderno-estrategia")||"{}")||{}}catch(e){S={}}
+function save(){try{localStorage.setItem("cuaderno-estrategia",JSON.stringify(S))}catch(e){}}
+function $(id){return document.getElementById(id)}
+
+/* Navegación */
+var stepsEl=$("steps"),cur=0;
+NAMES.forEach(function(n,i){var b=document.createElement("button");b.textContent=n;b.onclick=function(){go(i)};stepsEl.appendChild(b)});
+function go(i){
+  cur=i;
+  for(var k=0;k<NAMES.length;k++){$("s"+k).classList.toggle("on",k===i)}
+  var bs=stepsEl.children;
+  for(var j=0;j<bs.length;j++){if(j===i){bs[j].setAttribute("aria-current","step");bs[j].scrollIntoView({inline:"center",block:"nearest"})}else bs[j].removeAttribute("aria-current")}
+  if(i===3)renderScript(); if(i===5){renderPlan()}
+  window.scrollTo(0,0);
+}
+document.addEventListener("click",function(e){var t=e.target.closest("[data-go]");if(t)go(+t.getAttribute("data-go"))});
+
+/* Campos de texto */
+var inputs=document.querySelectorAll("[data-k]");
+inputs.forEach(function(el){
+  var k=el.getAttribute("data-k"); if(S[k])el.value=S[k];
+  el.addEventListener("input",function(){S[k]=el.value;save();if(cur===3)renderScript();if(cur===5)renderPlan()});
+});
+
+/* Encuesta de entrada */
+var POLL=[
+ ["Un plan con metas a un año","Eso se parece a la perspectiva <b>clásica</b> (Chandler, Andrews): metas, vías de acción y recursos."],
+ ["Diferenciarme de la competencia","Eso se parece a la perspectiva de <b>posicionamiento</b> (Porter, Lafley y Martin): un valor único y elecciones coordinadas."],
+ ["Lo que aprendemos al decidir cada día","Eso se parece a la perspectiva de <b>aprendizaje</b> (Mintzberg): un patrón en una corriente de decisiones."],
+ ["Cómo cambian las decisiones con el tiempo","Eso se parece a la estrategia <b>como proceso</b> (De Villa y Langley, 2024): emergencia, flujo y evolución."],
+ ["Lo que hacemos y conversamos con otras personas","Eso es la estrategia <b>como práctica</b> (Golsorkhi et al., 2025): acciones e interacciones que dan dirección. Es la lente de hoy."]
+];
+var pollEl=$("poll");
+function renderPoll(){
+  pollEl.innerHTML="";
+  POLL.forEach(function(p,i){
+    var b=document.createElement("button");b.className="opt";b.textContent=p[0];b.setAttribute("aria-pressed",S.poll===i?"true":"false");
+    b.onclick=function(){S.poll=i;save();renderPoll()};pollEl.appendChild(b);
+  });
+  var fb=$("pollfb");
+  if(typeof S.poll==="number"){fb.hidden=false;fb.innerHTML=POLL[S.poll][1]+" Todas son válidas. Hoy las ponemos a conversar."}else fb.hidden=true;
+}
+renderPoll();
+
+/* Conceptos esenciales */
+var CON=[["Propósito","¿Para qué?"],["Entorno","Interacción con el mercado y el contexto"],["Diversidad de actores","No solo la alta dirección"],["Día a día","Patrones de acciones"],["Tiempo","Pasado, presente y futuro"],["Renuncias","Elecciones difíciles"],["Coherencia","Que las piezas se sostengan entre sí"],["Desempeño amplio","Más allá de lo financiero"]];
+S.con=S.con||[];
+function renderChips(){
+  var c=$("chips");c.innerHTML="";
+  CON.forEach(function(x,i){
+    var b=document.createElement("button");b.className="chip";b.textContent=x[0];b.title=x[1];
+    b.setAttribute("aria-pressed",S.con.indexOf(i)>-1?"true":"false");
+    b.onclick=function(){var p=S.con.indexOf(i);if(p>-1)S.con.splice(p,1);else S.con.push(i);save();renderChips()};
+    c.appendChild(b);
+  });
+  var miss=CON.filter(function(x,i){return S.con.indexOf(i)<0}).map(function(x){return x[0].toLowerCase()});
+  $("chipmsg").textContent=S.con.length?(miss.length?"Aún no aparecen: "+miss.join(", ")+". Pregúntate si deberían estar.":"Aparecen los ocho. Revisa si hay coherencia entre ellos."):"Toca los conceptos que reconoces en tus decisiones.";
+}
+renderChips();
+
+/* Quiz */
+var Q=[
+ {q:"En Estados Unidos, las mujeres son cerca de la mitad de quienes entran a las empresas. ¿Qué porcentaje ocupa los cargos de la alta dirección (C-suite)?",o:["15%","29%","40%","48%"],a:1,f:"29%. Entran 48% y llegan a 29% del C-suite (Ellingrud, Yee y Martínez, HBR 2025; datos de EE.UU.)."},
+ {q:"En 128 empresas colombianas analizadas en 2026, ¿qué porcentaje de los puestos de junta directiva ocupan mujeres?",o:["15%","27,4%","40%","50%"],a:1,f:"27,4%, frente a 25,6% en 2025 y cerca de 15% en 2018. 234 de 854 puestos (CESA, Club 30% y WIC, 2026)."},
+ {q:"En esas mismas 128 empresas, ¿cuántas tienen una mujer como CEO?",o:["16","32","64","90"],a:0,f:"16 (12,5%). La presencia en juntas crece más rápido que en la gerencia general (CESA, Club 30% y WIC, 2026)."},
+ {q:"Según HBR (2025), ¿qué explica en promedio la mitad de la variación en “capital de experiencia”, el conocimiento y la sabiduría que se gana trabajando?",o:["El título universitario","Haber estado pronto en una organización que apoya el crecimiento","Las horas trabajadas","La ciudad donde se trabaja"],a:1,f:"La exposición temprana, en los primeros cinco años, a una organización con cultura de aprendizaje explica 50% (Ellingrud et al., 2025). Elegir bien la empresa es una decisión estratégica."},
+ {q:"En el estudio de estrategia abierta en empresas de América Latina, ¿qué pasa cuando se abre la estrategia a directivos y colaboradores?",o:["Solo aparecen riesgos","Solo aparecen beneficios","Más beneficios, pero también incertidumbre y malestar","No cambia nada"],a:2,f:"Mayor apertura trae aprendizaje, capacidades y compromiso, pero también incertidumbre y malestar en quienes se incluyen (Rivas-Montoya et al., 2024)."},
+ {q:"Mito o dato: “Si las mujeres se educan más, el liderazgo se equilibra solo”.",o:["Dato","Mito"],a:1,f:"Mito. En EE.UU. las mujeres obtuvieron 59% de los pregrados en 2021 y siguen en 29% del C-suite (HBR, 2025). El equilibrio requiere decisiones de organización."}
+];
+S.qa=S.qa||{};
+function renderQuiz(){
+  var box=$("quiz");box.innerHTML="";var sc=0;
+  Q.forEach(function(it,qi){
+    var card=document.createElement("div");card.className="card";
+    var h=document.createElement("div");h.innerHTML="<b>"+(qi+1)+". "+it.q+"</b>";card.appendChild(h);
+    var os=document.createElement("div");os.className="opts";
+    var ans=S.qa[qi];
+    it.o.forEach(function(t,oi){
+      var b=document.createElement("button");b.className="opt";b.textContent=t;
+      if(typeof ans==="number"){
+        if(oi===it.a)b.classList.add("right");else if(oi===ans)b.classList.add("wrong");
+        b.disabled=true;
+      }
+      b.onclick=function(){S.qa[qi]=oi;save();renderQuiz()};
+      os.appendChild(b);
+    });
+    card.appendChild(os);
+    if(typeof ans==="number"){
+      if(ans===it.a)sc++;
+      var fb=document.createElement("div");fb.className="fb";fb.innerHTML="<b>"+(ans===it.a?"Correcto. ":"No exactamente. ")+"</b>"+it.f;card.appendChild(fb);
+    }
+    box.appendChild(card);
+  });
+  $("score").textContent=sc+" de "+Q.length;
+}
+renderQuiz();
+
+/* Guion de conversación */
+function line(label,v){return v&&v.trim()?v.trim():"…"}
+function renderScript(){
+  var t="Quiero conversar contigo"+(S.c0&&S.c0.trim()?" ("+S.c0.trim()+")":"")+".\n\n"+
+  "Mi propósito: "+line("",S.c1)+"\n"+
+  "Lo que he observado: "+line("",S.c2)+"\n"+
+  "Veo estas opciones y esto dejaríamos de hacer: "+line("",S.c3)+"\n"+
+  "Te pido: "+line("",S.c4)+"\n"+
+  "Para dar seguimiento: "+line("",S.c5);
+  $("script").textContent=t;
+}
+
+/* Cuidado */
+var CARE=[
+ ["Atender","Noto lo que mi equipo y mi entorno necesitan antes de que me lo digan","Observa el entorno y los actores"],
+ ["Asumir responsabilidad","Me hago cargo de lo que me toca, sin esperar a que otra persona lo haga","Define propósito y prioridades"],
+ ["Ser competente","Tengo capacidades, tiempo y recursos para cuidar bien","Construye capacidades"],
+ ["Responder","Cierro el ciclo: pregunto si lo que hice sirvió y ajusto","Aprende de lo que decide"],
+ ["Cuidar con otras","Reparto el cuidado y construyo confianza, no lo cargo sola","Abre la estrategia a más actores"]
+];
+S.care=S.care||[3,3,3,3,3];
+function renderCare(){
+  var r=$("rng");r.innerHTML="<label>En mi liderazgo hoy… <span class=\"hint\">1 casi nunca · 5 casi siempre</span></label>";
+  CARE.forEach(function(c,i){
+    var d=document.createElement("div");d.className="rng";
+    d.innerHTML="<label for=\"cr"+i+"\" style=\"font-weight:600\">"+c[0]+": "+c[1]+"</label><input type=\"range\" id=\"cr"+i+"\" min=\"1\" max=\"5\" step=\"1\" value=\""+S.care[i]+"\">";
+    r.appendChild(d);
+    d.querySelector("input").addEventListener("input",function(e){S.care[i]=+e.target.value;save();renderCareRes()});
+  });
+  renderCareRes();
+}
+function renderCareRes(){
+  var h="<h3>Mis cinco fases del cuidado</h3>";
+  var lo=0,hi=0;
+  S.care.forEach(function(v,i){if(v<S.care[lo])lo=i;if(v>S.care[hi])hi=i});
+  CARE.forEach(function(c,i){
+    h+="<div class=\"res\"><div class=\"nm\">"+c[0]+" <span class=\"muted small\">· en estrategia: "+c[2]+"</span></div><div class=\"bar\"><i style=\"width:"+(S.care[i]*20)+"%\"></i></div><span class=\"n\">"+S.care[i]+"</span></div>";
+  });
+  h+="<p>Mi fase más fuerte: <b>"+CARE[hi][0]+"</b>. La que más atención pide: <b>"+CARE[lo][0]+"</b>.</p><p class=\"small muted\">Cuidar sin vaciarse también es estrategia: cada sí a una persona tiene un no a otra cosa.</p>";
+  $("care").innerHTML=h;
+}
+renderCare();
+
+/* Plan */
+function fmtDate(v){if(!v)return"…";var p=v.split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:v}
+function planText(){
+  function v(x){return x&&x.trim()?x.trim():"…"}
+  return "Mi plan de 30 días\n\n"+
+  "1. Conversación estratégica: "+v(S.p1)+"\n"+
+  "2. Renuncia que practico: "+v(S.p2)+"\n"+
+  "3. Gesto de cuidado: "+v(S.p3)+"\n\n"+
+  "Lo comparto con: "+v(S.p4)+"\n"+
+  "Reviso el: "+fmtDate(S.p5);
+}
+function renderPlan(){var t=planText();$("plan").textContent=t;$("wa").href="https://wa.me/?text="+encodeURIComponent(t)}
+function setField(k,val){S[k]=val;var el=document.querySelector("[data-k=\""+k+"\"]");if(el)el.value=val}
+$("fill").onclick=function(){
+  var c=[S.c1,S.c4].filter(function(x){return x&&x.trim()}).join(" · ");
+  if(S.c0&&S.c0.trim())c=S.c0.trim()+(c?" — "+c:"");
+  if(c)setField("p1",c);
+  if(S.ren&&S.ren.trim())setField("p2",S.ren.trim());
+  if(S.ges&&S.ges.trim())setField("p3",S.ges.trim());
+  save();renderPlan();toast("Plan rellenado");
+};
+
+/* Copiar */
+function toast(m){var t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true},1800)}
+function copyFrom(preId){
+  var el=$(preId),txt=el.textContent;
+  function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);toast("Texto seleccionado: cópialo")}
+  try{navigator.clipboard.writeText(txt).then(function(){toast("Copiado")},fallback)}catch(e){fallback()}
+}
+$("copyScript").onclick=function(){copyFrom("script")};
+$("copyPlan").onclick=function(){copyFrom("plan")};
+
+/* Borrar (con confirmación en la página) */
+var armed=false;
+$("clear").onclick=function(){
+  var b=$("clear");
+  if(!armed){armed=true;b.textContent="Toca otra vez para borrar todo";setTimeout(function(){armed=false;b.textContent="Borrar mis respuestas"},3500);return}
+  S={con:[],qa:{},care:[3,3,3,3,3]};save();
+  inputs.forEach(function(el){el.value=""});
+  renderPoll();renderChips();renderQuiz();renderCare();renderScript();renderPlan();
+  armed=false;b.textContent="Borrar mis respuestas";toast("Respuestas borradas");
+};
+
+go(0);renderScript();renderPlan();
+})();
+</script>
+
+</body>
+</html>
