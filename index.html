@@ -117,7 +117,7 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
 <body>
 <div class="wrap">
 <header style="padding-block:20px 12px;display:grid;gap:6px">
-  <div class="eyebrow">Conferencia de cierre · Estrategia, liderazgo y cuidado</div>
+  <div class="eyebrow">Conferencia · Estrategia, liderazgo y cuidado</div>
   <h1>Cuaderno de estrategia</h1>
   <p class="muted small">Lo que escribes se guarda solo en este teléfono. Nadie más lo ve, a menos que tú lo envíes.</p>
 </header>
@@ -217,20 +217,20 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
 <!-- 4 CUIDAR -->
 <section id="s4">
   <div class="eyebrow">Bloque 4 · Liderar y cuidar</div>
-  <h2>Cuidar es una práctica de liderazgo</h2>
+  <h2>Cuidar es una práctica de liderazgo estratégico</h2>
   <p class="muted">Joan Tronto (1993, 2013) describe el cuidado como un proceso con fases. Aquí lo leemos junto a la estrategia como práctica: atender es observar el entorno, responder es aprender de lo que decidimos.</p>
   <div class="card" id="rng"></div>
   <div class="card soft" id="care"></div>
   <div class="card">
     <div><label for="ren">Una renuncia que protege mi energía <span class="hint">algo que dejaré de hacer o aceptar</span></label><textarea id="ren" data-k="ren"></textarea></div>
-    <div><label for="ges">Un gesto de cuidado hacia mi equipo o mis aliadas</label><textarea id="ges" data-k="ges"></textarea></div>
+    <div><label for="ges">Un gesto de cuidado hacia mi equipo o mis aliados</label><textarea id="ges" data-k="ges"></textarea></div>
   </div>
   <div class="nextbar"><button class="btn alt" data-go="3">Atrás</button><button class="btn" data-go="5">Siguiente</button></div>
 </section>
 
 <!-- 5 PLAN -->
 <section id="s5">
-  <div class="eyebrow">Cierre</div>
+  <div class="eyebrow">Hoja de ruta</div>
   <h2>Mi hoja de ruta de 30 días</h2>
   <p class="muted">Tres compromisos pequeños, con fecha. Se llenan con lo que ya escribiste; puedes cambiarlos.</p>
   <div class="card">
@@ -242,7 +242,7 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
   </div>
   <div class="row"><button class="btn alt" id="fill">Rellenar con lo que escribí</button></div>
   <div class="card soft"><label>Mi hoja de ruta</label><pre class="out" id="plan"></pre>
-    <div class="row"><button class="btn" id="copyPlan">Copiar</button><a class="btn alt" id="wa" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:inline-grid;align-items:center">Abrir en WhatsApp</a></div>
+    <div class="row"><button class="btn" id="copyPlan">Copiar</button><button class="btn" id="dl1">Descargar mi cuaderno</button><a class="btn alt" id="wa" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:inline-grid;align-items:center">Abrir en WhatsApp</a></div>
     <p class="small muted">WhatsApp abre un mensaje con tu hoja de ruta para que lo envíes tú, a ti misma o a quien elijas.</p></div>
   <div class="nextbar"><button class="btn alt" data-go="4">Atrás</button><button class="btn" data-go="6">Para llevar</button></div>
 </section>
@@ -251,6 +251,16 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
 <section id="s6">
   <div class="eyebrow">Para llevar</div>
   <h2>Infaltables, tips y lecturas</h2>
+  <div class="card soft" id="dlcard">
+    <h3>Llévate tu cuaderno hoy</h3>
+    <ol class="clean" style="padding-left:1.2em;margin:0 0 10px;display:grid;gap:8px">
+      <li>Toca <b>Descargar mi cuaderno</b>.</li>
+      <li>Se guarda un archivo con tus respuestas y tu hoja de ruta en la carpeta <b>Descargas</b> (o en <b>Archivos</b>, si usas iPhone).</li>
+      <li>Ábrelo cuando quieras; no necesita internet.</li>
+    </ol>
+    <div class="row"><button class="btn" id="dl2">Descargar mi cuaderno</button></div>
+    <p class="small" style="margin:10px 0 0"><b>Este cuaderno estará disponible hasta el 31 de octubre de 2026.</b> Descárgalo antes de esa fecha para conservar lo que escribiste.</p>
+  </div>
   <div class="card">
     <h3>Cinco infaltables</h3>
     <ul class="clean">
@@ -267,21 +277,20 @@ ul.clean{margin:0;padding-left:1.1rem;display:grid;gap:8px}
       <li>Vuelve a abrirlo con el mismo teléfono y navegador: tus respuestas siguen aquí.</li>
       <li>Revisa tu hoja de ruta cada semana durante 10 minutos. Pon una alarma.</li>
       <li>Antes de una reunión difícil, completa los cinco movimientos del paso 3.</li>
-      <li>Si cambias de teléfono, copia tu hoja de ruta y guárdalo en tus notas o en WhatsApp.</li>
+      <li>Si cambias de teléfono, descarga tu cuaderno o copia tu hoja de ruta y guárdala en tus notas o en WhatsApp.</li>
     </ul>
     <div class="row"><button class="btn alt" id="clear">Borrar mis respuestas</button></div>
   </div>
   <div class="card ref">
     <h3>Lecturas recomendadas</h3>
-    <div>Rivas-Montoya, L. M., Alzate-Aguirre, L., Reyes-Sarmiento, M. E., y Maya Vásquez, J. C. (2024). Exploración de la estrategia abierta en compañías de América Latina: riesgos y beneficios. <i>Estudios Gerenciales, 40</i>(173), 502–515.</div>
+    <div>Rivas-Montoya, L. M., Alzate-Aguirre, L., Reyes-Sarmiento, M. E., y Maya Vásquez, J. C. (2024). Exploración de la estrategia abierta en compañías de América Latina. <i>Estudios Gerenciales, 40</i>(173), 502–515.</div>
+    <div>Rivas-Montoya, L. M. (2020). Conceptos esenciales de estrategia. En <i>Riesgo estratégico</i>. Editorial EAFIT. <a href="https://doi.org/10.17230/9789587206425ch1" target="_blank" rel="noopener">https://doi.org/10.17230/9789587206425ch1</a></div>
+    <div>Rivas-Montoya, L. M. (2023). <i>Estramipyme: metodología fácil y ágil para diseñar una estrategia competitiva</i> (1.ª ed.). Editorial EAFIT. <a href="https://doi.org/10.17230/9789587208245lr0" target="_blank" rel="noopener">https://doi.org/10.17230/9789587208245lr0</a></div>
     <div>Ellingrud, K., Yee, L., y Martínez, M. del M. (2025, marzo–abril). How women can win in the workplace. <i>Harvard Business Review</i>.</div>
-    <div>McKinsey &amp; Company y LeanIn.Org. (2025). <i>Women in the Workplace 2025</i>.</div>
-    <div>Centro de Estudios en Gobierno Corporativo (CESA), Club 30% y Women In Connection (2026). Participación de mujeres en juntas directivas en Colombia. Reportado por <a href="https://forbes.co/forbes-women/participacion-de-mujeres-en-juntas-directivas-en-colombia-alcanzo-el-274" target="_blank" rel="noopener">Forbes Colombia</a>.</div>
-    <div>Tronto, J. C. (1993). <i>Moral boundaries: A political argument for an ethic of care</i>. Routledge. Y Tronto, J. C. (2013). <i>Caring democracy</i>. NYU Press.</div>
-    <div>Stone, D., Patton, B., y Heen, S. (2010). <i>Difficult conversations</i> (2.ª ed.). Penguin.</div>
-    <div>Edmondson, A. C. (2018). <i>The fearless organization</i>. Wiley.</div>
+    <div>McKinsey &amp; Company y LeanIn.Org (2025). <i>Women in the Workplace 2025</i>.</div>
+    <div>CEGC-CESA, Club 30% y Women In Connection (2026). Mujeres en juntas directivas en Colombia. <a href="https://forbes.co/forbes-women/participacion-de-mujeres-en-juntas-directivas-en-colombia-alcanzo-el-274" target="_blank" rel="noopener">Forbes Colombia</a>.</div>
     <div>Lafley, A. G., y Martin, R. L. (2013). <i>Playing to win</i>. Harvard Business Review Press.</div>
-    <div><i>Estramipyme: metodología estratégica para pymes y redes empresariales</i> (2023). Editorial EAFIT. Plataforma: <a href="https://estramipyme-pi.vercel.app/" target="_blank" rel="noopener">estramipyme-pi.vercel.app</a>.</div>
+    <div>Whittington, R., Angwin, D., Regnér, P., Johnson, G., y Scholes, K. (2023). <i>Exploring strategy</i>. Pearson Education Limited.</div>
   </div>
   <p class="small muted">Conferencista: Luz María Rivas Montoya, Ph.D. · Universidad EAFIT</p>
   <div class="nextbar"><button class="btn alt" data-go="5">Atrás</button><span></span></div>
@@ -464,6 +473,34 @@ function copyFrom(preId){
 }
 $("copyScript").onclick=function(){copyFrom("script")};
 $("copyPlan").onclick=function(){copyFrom("plan")};
+
+
+/* Descargar cuaderno */
+function nbText(){
+  function v(x){return x&&String(x).trim()?String(x).trim():"…"}
+  var care="";
+  if(S.care){["Atender","Asumir responsabilidad","Ser competente","Responder","Cuidar con otras"].forEach(function(n,i){care+="  "+n+": "+S.care[i]+"/5\n"})}
+  return "CUADERNO DE ESTRATEGIA\nConferencia · Luz María Rivas Montoya, Ph.D. · Universidad EAFIT\n\n"+
+  "1. MI PATRÓN\nDecisión 1: "+v(S.d1)+"\nDecisión 2: "+v(S.d2)+"\nDecisión 3: "+v(S.d3)+"\nPatrón que veo: "+v(S.pat)+"\nA quién incluí y a quién no: "+v(S.inc)+"\nEn la práctica, mi estrategia es: "+v(S.frase)+"\n\n"+
+  "2. DATOS\nEl dato que más me movió: "+v(S.dato)+"\n\n"+
+  "3. CONVERSAR PARA PENSAR EN ESTRATEGIA\n"+$("script").textContent+"\n\n"+
+  "4. CUIDAR\n"+care+"Una renuncia que protege mi energía: "+v(S.ren)+"\nUn gesto de cuidado: "+v(S.ges)+"\n\n"+
+  "5. "+planText().toUpperCase().split("\n")[0]+"\n"+planText().split("\n").slice(1).join("\n").trim()+"\n";
+}
+function downloadNb(){
+  renderScript();
+  var txt=nbText();
+  try{
+    var b=new Blob(["\ufeff"+txt],{type:"text/plain;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="Mi cuaderno de estrategia.txt";
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);
+    toast("Listo: revisa tus descargas");
+  }catch(e){
+    $("plan").textContent=txt;toast("No se pudo descargar: copia el texto");
+  }
+}
+$("dl1").onclick=downloadNb;$("dl2").onclick=downloadNb;
 
 /* Borrar (con confirmación en la página) */
 var armed=false;
